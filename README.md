@@ -1,1 +1,1 @@
-# rarible-moralis
+# Rarible Moralis
