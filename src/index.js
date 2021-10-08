@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { MoralisProvider } from "react-moralis";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme();
 
 ReactDOM.render(
 	<StrictMode>
@@ -10,7 +13,9 @@ ReactDOM.render(
 			appId={process.env.REACT_APP_MORALIS_APP_ID}
 			serverUrl={process.env.REACT_APP_MORALIS_SERVER_ID}
 		>
-			<App />
+			<ThemeProvider theme={theme}>
+				<App />
+			</ThemeProvider>
 		</MoralisProvider>
 	</StrictMode>,
 	document.getElementById("root"),

@@ -1,8 +1,15 @@
 import React from "react";
-import "./App.css";
+import { Router } from "@reach/router";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
-function App() {
-	return <div className="App"></div>;
-}
+const App = () => {
+	return (
+		<Router>
+			<Login path="login" />
+			<SignUp path="signup" />
+		</Router>
+	);
+};
 
 export default App;
