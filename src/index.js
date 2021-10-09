@@ -1,10 +1,10 @@
 import React, { StrictMode } from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { MoralisProvider } from "react-moralis";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
 const theme = createTheme();
 

@@ -26,10 +26,18 @@ const Login = () => {
 	const [loadingButton, setLoadingButton] = useState(initialLoadingButtonValue);
 	const loading = useMemo(
 		() =>
-			loadingButton.email || loadingButton.metamask || loadingButton.walletConnect,
+			loadingButton.email ||
+			loadingButton.metamask ||
+			loadingButton.walletConnect,
 		[loadingButton],
 	);
 
+	/**
+	 * @description Handle Changes on Input fields
+	 *
+	 * @param {String} name - Name of the input field
+	 * @param {String} value - Value of the input field
+	 */
 	const onChange = (name, value) => {
 		setValues({ ...values, [name]: value });
 	};

@@ -21,7 +21,7 @@ Button.propTypes = {
 	loading: PropTypes.bool,
 	disabled: PropTypes.bool,
 	children: PropTypes.oneOf([PropTypes.node, PropTypes.string]),
-	sx: PropTypes.object,
+	sx: PropTypes.objectOf(PropTypes.object),
 };
 
 Button.defaultProps = {

@@ -6,8 +6,10 @@
 		"jest/globals": true
 	},
 	"extends": [
+		"airbnb",
+		"airbnb/hooks",
+		"plugin:jest/recommended",
 		"eslint:recommended",
-		"plugin:react/recommended",
 		"plugin:prettier/recommended"
 	],
 	"parserOptions": {
@@ -17,11 +19,9 @@
 		"ecmaVersion": 12,
 		"sourceType": "module"
 	},
-	"plugins": ["react", "prettier", "jest"],
 	"rules": {
-		"prettier/prettier": "error",
-		"arrow-body-style": "off",
-		"prefer-arrow-callback": "off",
-		"no-unused-vars": "warn"
+		"no-unused-vars": "warn",
+		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", "tsx"] }],
+		"react/jsx-props-no-spreading": "off"
 	}
 }
