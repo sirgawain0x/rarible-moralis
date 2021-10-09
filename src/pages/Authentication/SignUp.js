@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -12,10 +11,12 @@ import { useMoralis } from "react-moralis";
 import { useSnackbar } from "notistack";
 import { navigate } from "@reach/router";
 import TextField from "../../components/TextField";
+import Button from "../../components/Button";
 
 const SignUp = () => {
 	const { signup } = useMoralis();
 	const { enqueueSnackbar } = useSnackbar();
+	const [loadingButton, setLoadingButton] = useState(false);
 	const [values, setValues] = useState({
 		email: "",
 		username: "",
@@ -28,6 +29,7 @@ const SignUp = () => {
 	};
 
 	const onSignUp = async ({ username, email, password }) => {
+		setLoadingButton(true);
 		await signup(
 			username,
 			password,
@@ -40,6 +42,7 @@ const SignUp = () => {
 				},
 				onError: () => {
 					enqueueSnackbar("Sign Up Failed.", { variant: "error" });
+					setLoadingButton(false);
 				},
 			},
 		);
@@ -119,7 +122,13 @@ const SignUp = () => {
 							/>
 						</Grid>
 					</Grid>
-					<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						loading={loadingButton}
+						sx={{ mt: 3, mb: 2 }}
+					>
 						Sign Up
 					</Button>
 					<Grid container justifyContent="flex-end">

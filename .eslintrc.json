@@ -9,7 +9,6 @@
 		"airbnb",
 		"airbnb/hooks",
 		"plugin:jest/recommended",
-		"eslint:recommended",
 		"plugin:prettier/recommended"
 	],
 	"parserOptions": {
@@ -22,6 +21,12 @@
 	"rules": {
 		"no-unused-vars": "warn",
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", "tsx"] }],
-		"react/jsx-props-no-spreading": "off"
+		"react/jsx-props-no-spreading": "off",
+		"prettier/prettier": [
+			"error",
+			{
+			  "endOfLine": "auto"
+			}
+		 ]
 	}
 }
