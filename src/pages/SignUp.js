@@ -1,26 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import TextField from "../components/TextField";
+import { useMoralis } from "react-moralis";
+import { useSnackbar } from "notistack";
+import { navigate } from "@reach/router";
 
 const SignUp = () => {
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		// eslint-disable-next-line no-console
-		console.log({
-			email: data.get("email"),
-			password: data.get("password"),
-		});
+	const { signup } = useMoralis();
+	const { enqueueSnackbar } = useSnackbar();
+	const [values, setValues] = useState({
+		email: "",
+		username: "",
+		password: "",
+		confirmPassword: "",
+	});
+
+	const onChange = (name, value) => {
+		setValues({ ...values, [name]: value });
+	};
+
+	const onSignUp = async ({ username, email, password }) => {
+		await signup(
+			username,
+			password,
+			email,
+			{},
+			{
+				onSuccess: () => {
+					enqueueSnackbar("Sign Up Successful.", { variant: "success" });
+					navigate("/dashboard");
+				},
+				onError: () => {
+					enqueueSnackbar("Sign Up Failed.", { variant: "error" });
+				},
+			},
+		);
 	};
 
 	return (
@@ -40,29 +62,16 @@ const SignUp = () => {
 				<Typography component="h1" variant="h5">
 					Sign up
 				</Typography>
-				<Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+				<Box
+					component="form"
+					noValidate
+					onSubmit={async (e) => {
+						e.preventDefault();
+						await onSignUp(values);
+					}}
+					sx={{ mt: 3 }}
+				>
 					<Grid container spacing={2}>
-						<Grid item xs={12} sm={6}>
-							<TextField
-								autoComplete="fname"
-								name="firstName"
-								required
-								fullWidth
-								id="firstName"
-								label="First Name"
-								autoFocus
-							/>
-						</Grid>
-						<Grid item xs={12} sm={6}>
-							<TextField
-								required
-								fullWidth
-								id="lastName"
-								label="Last Name"
-								name="lastName"
-								autoComplete="lname"
-							/>
-						</Grid>
 						<Grid item xs={12}>
 							<TextField
 								required
@@ -70,7 +79,19 @@ const SignUp = () => {
 								id="email"
 								label="Email Address"
 								name="email"
-								autoComplete="email"
+								value={values.email}
+								onChange={onChange}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								required
+								fullWidth
+								id="username"
+								name="username"
+								label="Username"
+								value={values.username}
+								onChange={onChange}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -81,13 +102,20 @@ const SignUp = () => {
 								label="Password"
 								type="password"
 								id="password"
-								autoComplete="new-password"
+								value={values.password}
+								onChange={onChange}
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<FormControlLabel
-								control={<Checkbox value="allowExtraEmails" color="primary" />}
-								label="I want to receive inspiration, marketing promotions and updates via email."
+							<TextField
+								required
+								fullWidth
+								name="confirmPassword"
+								label="Confirm Password"
+								type="password"
+								id="password"
+								value={values.confirmPassword}
+								onChange={onChange}
 							/>
 						</Grid>
 					</Grid>

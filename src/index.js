@@ -4,6 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { MoralisProvider } from "react-moralis";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { SnackbarProvider } from "notistack";
 
 const theme = createTheme();
 
@@ -14,7 +15,12 @@ ReactDOM.render(
 			serverUrl={process.env.REACT_APP_MORALIS_SERVER_ID}
 		>
 			<ThemeProvider theme={theme}>
-				<App />
+				<SnackbarProvider
+					maxSnack={3}
+					anchorOrigin={{ horizontal: "center", vertical: "top" }}
+				>
+					<App />
+				</SnackbarProvider>
 			</ThemeProvider>
 		</MoralisProvider>
 	</StrictMode>,
