@@ -1,13 +1,14 @@
 import React from "react";
 import { Router } from "@reach/router";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
+import Authentication from "./pages/Authentication";
+import Dashboard from "./pages/Dashboard";
+import { useMoralis } from "react-moralis";
 
 const App = () => {
+	const { isAuthenticated } = useMoralis();
 	return (
 		<Router>
-			<Login path="login" />
-			<SignUp path="signup" />
+			{isAuthenticated ? <Dashboard path="/*" /> : <Authentication path="/*" />}
 		</Router>
 	);
 };

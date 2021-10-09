@@ -10,8 +10,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
-import TextField from "../components/TextField";
-import Button from "../components/Button";
+import TextField from "../../components/TextField";
+import Button from "../../components/Button";
 import { useSnackbar } from "notistack";
 
 const Login = () => {
