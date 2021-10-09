@@ -24,10 +24,23 @@ const SignUp = () => {
 		confirmPassword: "",
 	});
 
+	/**
+	 * @description Handle Changes on Input fields
+	 *
+	 * @param {String} name - Name of the input field
+	 * @param {String} value - Value of the input field
+	 */
 	const onChange = (name, value) => {
 		setValues({ ...values, [name]: value });
 	};
 
+	/**
+	 * @description Handle Email Sign Up for User
+	 *
+	 * @param {String} username - User's Username
+	 * @param {String} email - User's Email
+	 * @param {String} password - User's Password
+	 */
 	const onSignUp = async ({ username, email, password }) => {
 		setLoadingButton(true);
 		await signup(
