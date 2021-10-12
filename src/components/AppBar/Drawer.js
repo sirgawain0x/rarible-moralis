@@ -6,8 +6,8 @@ import MuiDrawer from "@mui/material/Drawer";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import { navigate } from "@reach/router";
+import DrawerMenu from "./DrawerMenu";
 
 const drawerWidth = 240;
 
@@ -32,7 +32,7 @@ const closedMixin = (theme) => ({
 	},
 });
 
-const DrawerHeader = styled("div")(({ theme }) => ({
+export const DrawerHeader = styled("div")(({ theme }) => ({
 	display: "flex",
 	alignItems: "center",
 	justifyContent: "flex-end",
@@ -59,20 +59,29 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const CustomDrawer = (props) => {
-	const { open } = props;
+	const { open, pathname } = props;
 
 	return (
 		<Drawer variant="permanent" open={open}>
 			<DrawerHeader />
 			<List>
-				{["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-					<ListItem button key={text}>
-						<ListItemIcon>
-							{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-						</ListItemIcon>
-						<ListItemText primary={text} />
-					</ListItem>
-				))}
+				{DrawerMenu.map((menu) => {
+					const { name, link, title, icon: Icon } = menu;
+					const isSelected = pathname === `/${link}`;
+					return (
+						<ListItem
+							button
+							key={name}
+							onClick={() => navigate(link)}
+							selected={isSelected}
+						>
+							<ListItemIcon>
+								<Icon />
+							</ListItemIcon>
+							<ListItemText primary={title} />
+						</ListItem>
+					);
+				})}
 			</List>
 		</Drawer>
 	);
@@ -80,6 +89,7 @@ const CustomDrawer = (props) => {
 
 CustomDrawer.propTypes = {
 	open: PropTypes.bool,
+	pathname: PropTypes.string.isRequired,
 };
 
 CustomDrawer.defaultProps = {

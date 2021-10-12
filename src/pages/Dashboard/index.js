@@ -1,21 +1,10 @@
 import React, { useEffect } from "react";
 import { Router, useLocation, navigate } from "@reach/router";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-
 import Dashboard from "./Dashboard";
-import IPFS from "./IPFS";
-import AppBar from "../../components/AppBar";
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-	display: "flex",
-	alignItems: "center",
-	justifyContent: "flex-end",
-	padding: theme.spacing(0, 1),
-	// necessary for content to be below app bar
-	...theme.mixins.toolbar,
-}));
+import ERC721 from "./ERC721";
+import AppBar, { DrawerHeader } from "../../components/AppBar";
 
 const Index = () => {
 	const { pathname } = useLocation();
@@ -29,12 +18,12 @@ const Index = () => {
 	return (
 		<Box sx={{ display: "flex" }}>
 			<CssBaseline />
-			<AppBar />
+			<AppBar pathname={pathname} />
 			<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
 				<DrawerHeader />
 				<Router>
 					<Dashboard path="dashboard" />
-					<IPFS path="ipfs" />
+					<ERC721 path="erc721" />
 				</Router>
 			</Box>
 		</Box>
