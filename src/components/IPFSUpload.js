@@ -9,6 +9,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Slide from "@mui/material/Slide";
 import { useTheme } from "@mui/material/styles";
+// IMPORTANT NOTE: Using Material UI V4 here for supporting `material-ui-dropzone`
+// These shall be imported to V5 once `material-ui-dropzone` migrated to V5
 import Button from "@material-ui/core/Button";
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 
@@ -35,12 +37,18 @@ const IPFSUpload = (props) => {
 	const isSmallScreen = useMediaQuery(V5Theme.breakpoints.down("md"));
 	const [IPFSFiles, setIPFSFiles] = useState([]);
 
+	/**
+	 * @description Handle Cancelling IPFS Upload Process
+	 */
 	const handleCancel = () => {
 		onCancel();
 		// Reset files to be empty
 		setIPFSFiles([]);
 	};
 
+	/**
+	 * @description Handle Upload Files to IPFS
+	 */
 	const handleUpload = () => {
 		onUpload(IPFSFiles);
 	};
