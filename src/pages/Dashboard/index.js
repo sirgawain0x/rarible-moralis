@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Button from "../../components/Button";
 import Dashboard from "./Dashboard";
+import IPFS from "./IPFS";
 
 const Index = () => {
 	const { enqueueSnackbar } = useSnackbar();
@@ -40,6 +41,7 @@ const Index = () => {
 		<Grid container direction="column" sx={{ p: 3 }}>
 			<Router>
 				<Dashboard path="dashboard" />
+				<IPFS path="ipfs" />
 			</Router>
 			<Typography variant="h6">User: {userData.username}</Typography>
 			{userData.email && (
