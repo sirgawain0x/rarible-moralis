@@ -1,46 +1,83 @@
-import React, { useState } from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import React, { forwardRef, useState } from "react";
 import { DropzoneArea } from "material-ui-dropzone";
-import { useMoralisFile } from "react-moralis";
+import Grid from "@mui/material/Grid";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Slide from "@mui/material/Slide";
+import { useTheme } from "@mui/material/styles";
+import Button from "@material-ui/core/Button";
+import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+
+const theme = createTheme({
+	overrides: {
+		MuiDropzonePreviewList: {
+			imageContainer: { textAlign: "left", width: "100%", marginTop: "1rem" },
+			image: {
+				height: "100%",
+				width: "auto",
+				boxShadow: "3px 3px 4px #292929",
+			},
+		},
+	},
+});
+
+const Transition = forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const IPFSUpload = () => {
-	const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
+	const V5Theme = useTheme();
+	const isSmallScreen = useMediaQuery(V5Theme.breakpoints.down("md"));
 	const [IPFSFiles, setIPFSFiles] = useState([]);
+	console.log(IPFSFiles);
 	return (
-		<Grid
-			container
-			direction="column"
-			justifyContent="center"
-			alignItems="center"
+		<Dialog
+			open
+			fullWidth
+			fullScreen={isSmallScreen}
+			maxWidth="md"
+			TransitionComponent={Transition}
 		>
-			<Grid item xs={12} lg={12} sx={{ width: "100%" }}>
-				<DropzoneArea
-					showPreviews
-					showPreviewsInDropzone={false}
-					useChipsForPreview
-					onChange={(files) => setIPFSFiles(files)}
-					previewGridProps={{ container: { spacing: 1, direction: "row" } }}
-					previewChipProps={{
-						classes: {
-							root: {
-								minWidth: 160,
-								maxWidth: 210,
-							},
-						},
-					}}
-				/>
-			</Grid>
-			{IPFSFiles?.length > 0 && (
-				<Grid item xs={12}>
-					<Typography>{JSON.stringify(IPFSFiles)}</Typography>
+			<DialogTitle>Upload to IPFS</DialogTitle>
+			<DialogContent>
+				<MuiThemeProvider theme={theme}>
+					<DropzoneArea
+						showPreviews
+						showPreviewsInDropzone={false}
+						onChange={(files) => setIPFSFiles(files)}
+						previewText=""
+						alertSnackbarProps={{
+							anchorOrigin: { vertical: "top", horizontal: "center" },
+						}}
+					/>
+				</MuiThemeProvider>
+			</DialogContent>
+			<DialogActions>
+				<Grid
+					container
+					direction={isSmallScreen ? "column" : "row"}
+					justifyContent="flex-end"
+					spacing={1}
+					sx={
+						isSmallScreen ? { padding: "1rem" } : { padding: "0 1rem 1rem 0" }
+					}
+				>
+					<Grid item>
+						<Button variant="contained" color="secondary" fullWidth>
+							Cancel
+						</Button>
+					</Grid>
+					<Grid item>
+						<Button variant="contained" color="primary" fullWidth>
+							Upload to IPFS
+						</Button>
+					</Grid>
 				</Grid>
-			)}
-			<Grid item xs={12}>
-				<Button>Upload to IPFS</Button>
-			</Grid>
-		</Grid>
+			</DialogActions>
+		</Dialog>
 	);
 };
 
