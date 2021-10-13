@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, ChangeEvent } from "react";
 import { useMoralis } from "react-moralis";
-import { navigate } from "@reach/router";
+import { navigate, RouteComponentProps } from "@reach/router";
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Link from "@mui/material/Link";
@@ -11,10 +11,17 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import { useSnackbar } from "notistack";
+import { Web3Provider } from "react-moralis/lib/hooks/useMoralis/_useMoralisWeb3";
 import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 
-const Login = () => {
+interface LoginType {
+	username: string;
+	password: string;
+}
+
+// eslint-disable-next-line
+const Login = (_props: RouteComponentProps): JSX.Element => {
 	const { login, authenticate } = useMoralis();
 	const { enqueueSnackbar } = useSnackbar();
 	const [values, setValues] = useState({ username: "", password: "" });
@@ -35,7 +42,7 @@ const Login = () => {
 	 * @param {String} name - Name of the input field
 	 * @param {String} value - Value of the input field
 	 */
-	const onChange = (name, value) => {
+	const onChange = (name: string, value: string) => {
 		setValues({ ...values, [name]: value });
 	};
 
@@ -46,9 +53,9 @@ const Login = () => {
 	 *
 	 * @param {String} type - Crypto Login Option (e.g. Metamask, WalletConnect, or Elrond)
 	 */
-	const onCryptoLogin = async (type) => {
+	const onCryptoLogin = async (type: string) => {
 		setLoadingButton({ ...loadingButton, [type]: true });
-		const options = () => {
+		const options: () => { provider?: Web3Provider } = () => {
 			switch (type) {
 				case "metamask":
 					return {};
@@ -83,7 +90,7 @@ const Login = () => {
 	 * @param {String} username = Username of the user
 	 * @param {String} password = Password of the user
 	 */
-	const onEmailLogin = async ({ username, password }) => {
+	const onEmailLogin = async ({ username, password }: LoginType) => {
 		setLoadingButton({ ...loadingButton, email: true });
 		await login(username, password, {
 			onSuccess: () => {
@@ -94,6 +101,11 @@ const Login = () => {
 				setLoadingButton(initialLoadingButtonValue);
 			},
 		});
+	};
+
+	const handleSubmit = async (e: ChangeEvent<HTMLInputElement>) => {
+		e.preventDefault();
+		await onEmailLogin(values);
 	};
 
 	return (
@@ -113,15 +125,7 @@ const Login = () => {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<Box
-					component="form"
-					onSubmit={async (e) => {
-						e.preventDefault();
-						await onEmailLogin(values);
-					}}
-					noValidate
-					sx={{ mt: 1 }}
-				>
+				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
 					<TextField
 						margin="normal"
 						required
@@ -130,6 +134,7 @@ const Login = () => {
 						label="Username"
 						name="username"
 						autoFocus
+						variant="outlined"
 						disabled={loading}
 						value={values.username}
 						onChange={onChange}
@@ -142,6 +147,7 @@ const Login = () => {
 						label="Password"
 						type="password"
 						id="password"
+						variant="outlined"
 						disabled={loading}
 						value={values.password}
 						onChange={onChange}

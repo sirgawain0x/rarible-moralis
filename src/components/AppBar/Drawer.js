@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import List from "@mui/material/List";
 import MuiDrawer from "@mui/material/Drawer";
@@ -85,15 +84,6 @@ const CustomDrawer = (props) => {
 			</List>
 		</Drawer>
 	);
-};
-
-CustomDrawer.propTypes = {
-	open: PropTypes.bool,
-	pathname: PropTypes.string.isRequired,
-};
-
-CustomDrawer.defaultProps = {
-	open: false,
 };
 
 export default CustomDrawer;

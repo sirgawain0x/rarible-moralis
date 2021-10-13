@@ -1,12 +1,13 @@
 import React, { useMemo } from "react";
 import { useMoralis } from "react-moralis";
 import Grid from "@mui/material/Grid";
-import { navigate } from "@reach/router";
+import { navigate, RouteComponentProps } from "@reach/router";
 import { useSnackbar } from "notistack";
 import Typography from "@mui/material/Typography";
 import Button from "../../components/Button";
 
-const Dashboard = () => {
+// eslint-disable-next-line
+const Dashboard = (_props: RouteComponentProps): JSX.Element => {
 	const { user, logout } = useMoralis();
 	const { enqueueSnackbar } = useSnackbar();
 	const userData = useMemo(() => {

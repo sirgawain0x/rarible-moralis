@@ -1,9 +1,19 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { ReactNode } from "react";
 import MUIButton from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const Button = (props) => {
+interface ButtonType {
+	loading?: boolean;
+	disabled?: boolean;
+	fullWidth?: boolean;
+	type?: "button" | "submit" | "reset";
+	children: ReactNode | string;
+	variant?: "text" | "contained" | "outlined";
+	onClick?: () => void;
+	sx?: any;
+}
+
+const Button = (props: ButtonType): JSX.Element => {
 	const { loading, disabled, children, sx, ...rest } = props;
 	return (
 		<MUIButton
@@ -15,20 +25,6 @@ const Button = (props) => {
 			{loading ? <CircularProgress /> : children}
 		</MUIButton>
 	);
-};
-
-Button.propTypes = {
-	loading: PropTypes.bool,
-	disabled: PropTypes.bool,
-	children: PropTypes.oneOf([PropTypes.node, PropTypes.string]),
-	sx: PropTypes.objectOf(PropTypes.object),
-};
-
-Button.defaultProps = {
-	loading: false,
-	disabled: false,
-	children: <></>,
-	sx: {},
 };
 
 export default Button;

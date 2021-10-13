@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -46,10 +45,6 @@ const CustomAppBar = (props) => {
 			<Drawer open={openAppBar} pathname={pathname} />
 		</>
 	);
-};
-
-CustomAppBar.propTypes = {
-	pathname: PropTypes.string.isRequired,
 };
 
 export default CustomAppBar;

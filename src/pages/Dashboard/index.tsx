@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
-import { Router, useLocation, navigate } from "@reach/router";
+import {
+	Router,
+	useLocation,
+	navigate,
+	RouteComponentProps,
+} from "@reach/router";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Dashboard from "./Dashboard";
 import ERC721 from "./ERC721";
-import AppBar, { DrawerHeader } from "../../components/AppBar";
+import { DrawerHeader } from "../../components/AppBar";
 
-const Index = () => {
+// eslint-disable-next-line
+const Index = (_props: RouteComponentProps): JSX.Element => {
 	const { pathname } = useLocation();
 
 	useEffect(() => {
@@ -18,7 +24,7 @@ const Index = () => {
 	return (
 		<Box sx={{ display: "flex" }}>
 			<CssBaseline />
-			<AppBar pathname={pathname} />
+			{/* <AppBar pathname={pathname} /> */}
 			<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
 				<DrawerHeader />
 				<Router>

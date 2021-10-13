@@ -1,6 +1,5 @@
 import React, { forwardRef, useState } from "react";
 import { DropzoneArea } from "material-ui-dropzone";
-import PropTypes from "prop-types";
 import Grid from "@mui/material/Grid";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -14,8 +13,15 @@ import { useTheme } from "@mui/material/styles";
 import Button from "@material-ui/core/Button";
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 
+interface IPFSUploadType {
+	open: boolean;
+	onCancel: () => void;
+	onUpload: (files: Array<File>) => void;
+}
+
 const theme = createTheme({
 	overrides: {
+		// @ts-ignore
 		MuiDropzonePreviewList: {
 			imageContainer: { textAlign: "left", width: "100%", marginTop: "1rem" },
 			image: {
@@ -28,14 +34,15 @@ const theme = createTheme({
 });
 
 const Transition = forwardRef(function Transition(props, ref) {
+	// @ts-ignore
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const IPFSUpload = (props) => {
+const IPFSUpload = (props: IPFSUploadType): JSX.Element => {
 	const { open, onCancel, onUpload } = props;
 	const V5Theme = useTheme();
 	const isSmallScreen = useMediaQuery(V5Theme.breakpoints.down("md"));
-	const [IPFSFiles, setIPFSFiles] = useState([]);
+	const [IPFSFiles, setIPFSFiles] = useState([] as File[]);
 
 	/**
 	 * @description Handle Cancelling IPFS Upload Process
@@ -59,13 +66,14 @@ const IPFSUpload = (props) => {
 			fullWidth
 			fullScreen={isSmallScreen}
 			maxWidth="md"
+			// @ts-ignore
 			TransitionComponent={Transition}
 		>
 			<DialogTitle>Upload to IPFS</DialogTitle>
 			<DialogContent>
 				<MuiThemeProvider theme={theme}>
 					<DropzoneArea
-						fileLimit={1}
+						filesLimit={1}
 						showPreviews
 						showPreviewsInDropzone={false}
 						onChange={(files) => setIPFSFiles(files)}
@@ -110,18 +118,6 @@ const IPFSUpload = (props) => {
 			</DialogActions>
 		</Dialog>
 	);
-};
-
-IPFSUpload.propTypes = {
-	open: PropTypes.bool,
-	onCancel: PropTypes.func,
-	onUpload: PropTypes.func,
-};
-
-IPFSUpload.defaultProps = {
-	open: false,
-	onCancel: () => {},
-	onUpload: () => {},
 };
 
 export default IPFSUpload;
