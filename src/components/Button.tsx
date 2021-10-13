@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
-import MUIButton from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
+import MUIButton from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface ButtonType {
 	loading?: boolean;
@@ -10,16 +10,16 @@ interface ButtonType {
 	children: ReactNode | string;
 	variant?: "text" | "contained" | "outlined";
 	onClick?: () => void;
-	sx?: any;
+	className?: string;
 }
 
 const Button = (props: ButtonType): JSX.Element => {
-	const { loading, disabled, children, sx, ...rest } = props;
+	const { loading, disabled, children, ...rest } = props;
 	return (
 		<MUIButton
 			disabled={disabled || loading}
 			fullWidth
-			sx={{ ...sx, height: "55px" }}
+			style={{ height: "55px" }}
 			{...rest}
 		>
 			{loading ? <CircularProgress /> : children}

@@ -1,7 +1,7 @@
 import React, { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import { MoralisProvider } from "react-moralis";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { SnackbarProvider } from "notistack";
 import App from "./App";
 

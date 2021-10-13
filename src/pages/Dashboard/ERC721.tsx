@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMoralisFile } from "react-moralis";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
 import { useSnackbar } from "notistack";
 import { RouteComponentProps } from "@reach/router";
 import Button from "../../components/Button";

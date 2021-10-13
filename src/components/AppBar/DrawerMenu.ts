@@ -1,5 +1,5 @@
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ImageIcon from "@mui/icons-material/Image";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import ImageIcon from "@material-ui/icons/Image";
 
 const DrawerMenu = [
 	{

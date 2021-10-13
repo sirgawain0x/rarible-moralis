@@ -1,12 +1,11 @@
 import React, { useState, ChangeEvent } from "react";
-import Avatar from "@mui/material/Avatar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useMoralis } from "react-moralis";
 import { useSnackbar } from "notistack";
 import { navigate, RouteComponentProps } from "@reach/router";
@@ -19,10 +18,27 @@ interface SignUpType {
 	password: string;
 }
 
+const useStyles = makeStyles((theme: Theme) => ({
+	mainContainer: {
+		marginTop: theme.spacing(8),
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+	},
+	formContainer: {
+		marginTop: theme.spacing(3),
+	},
+	submitButton: {
+		marginTop: theme.spacing(3),
+		marginBottom: theme.spacing(2),
+	},
+}));
+
 // eslint-disable-next-line
 const SignUp = (_props: RouteComponentProps): JSX.Element => {
 	const { signup } = useMoralis();
 	const { enqueueSnackbar } = useSnackbar();
+	const classes = useStyles();
 	const [loadingButton, setLoadingButton] = useState(false);
 	const [values, setValues] = useState({
 		email: "",
@@ -81,21 +97,15 @@ const SignUp = (_props: RouteComponentProps): JSX.Element => {
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
-			<Box
-				sx={{
-					marginTop: 8,
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-				}}
-			>
-				<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-					<LockOutlinedIcon />
-				</Avatar>
+			<Box className={classes.mainContainer}>
 				<Typography component="h1" variant="h5">
 					Sign up
 				</Typography>
-				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+				<Box
+					component="form"
+					onSubmit={handleSubmit}
+					className={classes.formContainer}
+				>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<TextField
@@ -153,7 +163,7 @@ const SignUp = (_props: RouteComponentProps): JSX.Element => {
 						fullWidth
 						variant="contained"
 						loading={loadingButton}
-						sx={{ mt: 3, mb: 2 }}
+						className={classes.submitButton}
 					>
 						Sign Up
 					</Button>

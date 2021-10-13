@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 import { useMoralis } from "react-moralis";
-import Grid from "@mui/material/Grid";
+import Grid from "@material-ui/core/Grid";
 import { navigate, RouteComponentProps } from "@reach/router";
 import { useSnackbar } from "notistack";
-import Typography from "@mui/material/Typography";
+import Typography from "@material-ui/core/Typography";
 import Button from "../../components/Button";
 
 // eslint-disable-next-line

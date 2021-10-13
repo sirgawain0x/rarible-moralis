@@ -1,15 +1,13 @@
 import React, { useState, useMemo, ChangeEvent } from "react";
 import { useMoralis } from "react-moralis";
 import { navigate, RouteComponentProps } from "@reach/router";
-import Avatar from "@mui/material/Avatar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
 import { Web3Provider } from "react-moralis/lib/hooks/useMoralis/_useMoralisWeb3";
 import TextField from "../../components/TextField";
@@ -20,10 +18,35 @@ interface LoginType {
 	password: string;
 }
 
+const useStyles = makeStyles((theme: Theme) => ({
+	mainContainer: {
+		marginTop: theme.spacing(8),
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+	},
+	formContainer: {
+		marginTop: theme.spacing(1),
+	},
+	emailButton: {
+		marginTop: theme.spacing(3),
+		marginBottom: theme.spacing(2),
+	},
+	metamaskButton: {
+		marginTop: theme.spacing(3),
+		marginBottom: theme.spacing(1),
+	},
+	walletconnectButton: {
+		marginTop: theme.spacing(1),
+		marginBottom: theme.spacing(2),
+	},
+}));
+
 // eslint-disable-next-line
 const Login = (_props: RouteComponentProps): JSX.Element => {
 	const { login, authenticate } = useMoralis();
 	const { enqueueSnackbar } = useSnackbar();
+	const classes = useStyles();
 	const [values, setValues] = useState({ username: "", password: "" });
 	const initialLoadingButtonValue = {
 		email: false,
@@ -111,21 +134,15 @@ const Login = (_props: RouteComponentProps): JSX.Element => {
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
-			<Box
-				sx={{
-					marginTop: 8,
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-				}}
-			>
-				<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-					<LockOutlinedIcon />
-				</Avatar>
+			<Box className={classes.mainContainer}>
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+				<Box
+					component="form"
+					onSubmit={handleSubmit}
+					className={classes.formContainer}
+				>
 					<TextField
 						margin="normal"
 						required
@@ -170,15 +187,15 @@ const Login = (_props: RouteComponentProps): JSX.Element => {
 						variant="contained"
 						disabled={loading}
 						loading={loadingButton.email}
-						sx={{ mt: 3, mb: 2 }}
+						className={classes.emailButton}
 					>
 						Sign In
 					</Button>
-					<Divider>or continue with</Divider>
+					{/* <Divider>or continue with</Divider> */}
 					<Button
 						fullWidth
 						variant="contained"
-						sx={{ mt: 3, mb: 1 }}
+						className={classes.metamaskButton}
 						disabled={loading}
 						loading={loadingButton.metamask}
 						onClick={() => onCryptoLogin("metamask")}
@@ -188,7 +205,7 @@ const Login = (_props: RouteComponentProps): JSX.Element => {
 					<Button
 						fullWidth
 						variant="contained"
-						sx={{ mt: 1, mb: 2 }}
+						className={classes.walletconnectButton}
 						disabled={loading}
 						loading={loadingButton.walletConnect}
 						onClick={() => onCryptoLogin("walletConnect")}
