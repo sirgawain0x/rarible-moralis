@@ -5,6 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
     "@mui/icons-material": "^5.0.3",
     "@mui/material": "^5.0.3",
     "@rarible/protocol-ethereum-sdk": "^0.6.0",
@@ -15,6 +17,7 @@
     "@walletconnect/web3-provider": "^1.6.6",
     "add": "^2.0.6",
     "dotenv": "^10.0.0",
+    "material-ui-dropzone": "^3.5.0",
     "moralis": "^0.0.73",
     "notistack": "^2.0.2",
     "prop-types": "^15.7.2",
