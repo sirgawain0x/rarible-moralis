@@ -1,22 +1,52 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, ChangeEvent } from "react";
 import { useMoralis } from "react-moralis";
-import { navigate } from "@reach/router";
-import Avatar from "@mui/material/Avatar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
+import { navigate, RouteComponentProps } from "@reach/router";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
+import { Web3Provider } from "react-moralis/lib/hooks/useMoralis/_useMoralisWeb3";
 import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 
-const Login = () => {
+interface LoginType {
+	username: string;
+	password: string;
+}
+
+const useStyles = makeStyles((theme: Theme) => ({
+	mainContainer: {
+		marginTop: theme.spacing(8),
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+	},
+	formContainer: {
+		marginTop: theme.spacing(1),
+	},
+	emailButton: {
+		marginTop: theme.spacing(3),
+		marginBottom: theme.spacing(2),
+	},
+	metamaskButton: {
+		marginTop: theme.spacing(3),
+		marginBottom: theme.spacing(1),
+	},
+	walletconnectButton: {
+		marginTop: theme.spacing(1),
+		marginBottom: theme.spacing(2),
+	},
+}));
+
+// eslint-disable-next-line
+const Login = (_props: RouteComponentProps): JSX.Element => {
 	const { login, authenticate } = useMoralis();
 	const { enqueueSnackbar } = useSnackbar();
+	const classes = useStyles();
 	const [values, setValues] = useState({ username: "", password: "" });
 	const initialLoadingButtonValue = {
 		email: false,
@@ -35,7 +65,7 @@ const Login = () => {
 	 * @param {String} name - Name of the input field
 	 * @param {String} value - Value of the input field
 	 */
-	const onChange = (name, value) => {
+	const onChange = (name: string, value: string) => {
 		setValues({ ...values, [name]: value });
 	};
 
@@ -46,9 +76,9 @@ const Login = () => {
 	 *
 	 * @param {String} type - Crypto Login Option (e.g. Metamask, WalletConnect, or Elrond)
 	 */
-	const onCryptoLogin = async (type) => {
+	const onCryptoLogin = async (type: string) => {
 		setLoadingButton({ ...loadingButton, [type]: true });
-		const options = () => {
+		const options: () => { provider?: Web3Provider } = () => {
 			switch (type) {
 				case "metamask":
 					return {};
@@ -83,7 +113,7 @@ const Login = () => {
 	 * @param {String} username = Username of the user
 	 * @param {String} password = Password of the user
 	 */
-	const onEmailLogin = async ({ username, password }) => {
+	const onEmailLogin = async ({ username, password }: LoginType) => {
 		setLoadingButton({ ...loadingButton, email: true });
 		await login(username, password, {
 			onSuccess: () => {
@@ -96,31 +126,22 @@ const Login = () => {
 		});
 	};
 
+	const handleSubmit = async (e: ChangeEvent<HTMLInputElement>) => {
+		e.preventDefault();
+		await onEmailLogin(values);
+	};
+
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
-			<Box
-				sx={{
-					marginTop: 8,
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-				}}
-			>
-				<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-					<LockOutlinedIcon />
-				</Avatar>
+			<Box className={classes.mainContainer}>
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
 				<Box
 					component="form"
-					onSubmit={async (e) => {
-						e.preventDefault();
-						await onEmailLogin(values);
-					}}
-					noValidate
-					sx={{ mt: 1 }}
+					onSubmit={handleSubmit}
+					className={classes.formContainer}
 				>
 					<TextField
 						margin="normal"
@@ -130,6 +151,7 @@ const Login = () => {
 						label="Username"
 						name="username"
 						autoFocus
+						variant="outlined"
 						disabled={loading}
 						value={values.username}
 						onChange={onChange}
@@ -142,6 +164,7 @@ const Login = () => {
 						label="Password"
 						type="password"
 						id="password"
+						variant="outlined"
 						disabled={loading}
 						value={values.password}
 						onChange={onChange}
@@ -164,15 +187,15 @@ const Login = () => {
 						variant="contained"
 						disabled={loading}
 						loading={loadingButton.email}
-						sx={{ mt: 3, mb: 2 }}
+						className={classes.emailButton}
 					>
 						Sign In
 					</Button>
-					<Divider>or continue with</Divider>
+					{/* <Divider>or continue with</Divider> */}
 					<Button
 						fullWidth
 						variant="contained"
-						sx={{ mt: 3, mb: 1 }}
+						className={classes.metamaskButton}
 						disabled={loading}
 						loading={loadingButton.metamask}
 						onClick={() => onCryptoLogin("metamask")}
@@ -182,7 +205,7 @@ const Login = () => {
 					<Button
 						fullWidth
 						variant="contained"
-						sx={{ mt: 1, mb: 2 }}
+						className={classes.walletconnectButton}
 						disabled={loading}
 						loading={loadingButton.walletConnect}
 						onClick={() => onCryptoLogin("walletConnect")}

@@ -1,9 +1,15 @@
 import React, { useEffect } from "react";
-import { Router, useLocation, navigate } from "@reach/router";
+import {
+	Router,
+	useLocation,
+	navigate,
+	RouteComponentProps,
+} from "@reach/router";
 import Login from "./Login";
 import SignUp from "./SignUp";
 
-const Index = () => {
+// eslint-disable-next-line
+const Index = (_props: RouteComponentProps): JSX.Element => {
 	const { pathname } = useLocation();
 
 	useEffect(() => {

@@ -4,7 +4,7 @@ import { useMoralis } from "react-moralis";
 import Authentication from "./pages/Authentication";
 import Dashboard from "./pages/Dashboard";
 
-const App = () => {
+const App = (): JSX.Element => {
 	const { isAuthenticated } = useMoralis();
 	return (
 		<Router>

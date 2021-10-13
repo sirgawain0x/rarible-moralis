@@ -1,21 +1,44 @@
-import React, { useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import React, { useState, ChangeEvent } from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useMoralis } from "react-moralis";
 import { useSnackbar } from "notistack";
-import { navigate } from "@reach/router";
+import { navigate, RouteComponentProps } from "@reach/router";
 import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 
-const SignUp = () => {
+interface SignUpType {
+	username: string;
+	email: string;
+	password: string;
+}
+
+const useStyles = makeStyles((theme: Theme) => ({
+	mainContainer: {
+		marginTop: theme.spacing(8),
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+	},
+	formContainer: {
+		marginTop: theme.spacing(3),
+	},
+	submitButton: {
+		marginTop: theme.spacing(3),
+		marginBottom: theme.spacing(2),
+	},
+}));
+
+// eslint-disable-next-line
+const SignUp = (_props: RouteComponentProps): JSX.Element => {
 	const { signup } = useMoralis();
 	const { enqueueSnackbar } = useSnackbar();
+	const classes = useStyles();
 	const [loadingButton, setLoadingButton] = useState(false);
 	const [values, setValues] = useState({
 		email: "",
@@ -30,7 +53,7 @@ const SignUp = () => {
 	 * @param {String} name - Name of the input field
 	 * @param {String} value - Value of the input field
 	 */
-	const onChange = (name, value) => {
+	const onChange = (name: string, value: string) => {
 		setValues({ ...values, [name]: value });
 	};
 
@@ -41,7 +64,7 @@ const SignUp = () => {
 	 * @param {String} email - User's Email
 	 * @param {String} password - User's Password
 	 */
-	const onSignUp = async ({ username, email, password }) => {
+	const onSignUp = async ({ username, email, password }: SignUpType) => {
 		setLoadingButton(true);
 		await signup(
 			username,
@@ -61,31 +84,27 @@ const SignUp = () => {
 		);
 	};
 
+	/**
+	 * @description Handle Sign Up Submission to Moralis with Email
+	 *
+	 * @param e - React Event Object
+	 */
+	const handleSubmit = async (e: ChangeEvent<HTMLInputElement>) => {
+		e.preventDefault();
+		await onSignUp(values);
+	};
+
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
-			<Box
-				sx={{
-					marginTop: 8,
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-				}}
-			>
-				<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-					<LockOutlinedIcon />
-				</Avatar>
+			<Box className={classes.mainContainer}>
 				<Typography component="h1" variant="h5">
 					Sign up
 				</Typography>
 				<Box
 					component="form"
-					noValidate
-					onSubmit={async (e) => {
-						e.preventDefault();
-						await onSignUp(values);
-					}}
-					sx={{ mt: 3 }}
+					onSubmit={handleSubmit}
+					className={classes.formContainer}
 				>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
@@ -95,6 +114,7 @@ const SignUp = () => {
 								id="email"
 								label="Email Address"
 								name="email"
+								variant="outlined"
 								value={values.email}
 								onChange={onChange}
 							/>
@@ -106,6 +126,7 @@ const SignUp = () => {
 								id="username"
 								name="username"
 								label="Username"
+								variant="outlined"
 								value={values.username}
 								onChange={onChange}
 							/>
@@ -118,6 +139,7 @@ const SignUp = () => {
 								label="Password"
 								type="password"
 								id="password"
+								variant="outlined"
 								value={values.password}
 								onChange={onChange}
 							/>
@@ -130,6 +152,7 @@ const SignUp = () => {
 								label="Confirm Password"
 								type="password"
 								id="password"
+								variant="outlined"
 								value={values.confirmPassword}
 								onChange={onChange}
 							/>
@@ -140,7 +163,7 @@ const SignUp = () => {
 						fullWidth
 						variant="contained"
 						loading={loadingButton}
-						sx={{ mt: 3, mb: 2 }}
+						className={classes.submitButton}
 					>
 						Sign Up
 					</Button>
