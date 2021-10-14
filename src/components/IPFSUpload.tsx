@@ -58,7 +58,7 @@ const IPFSUpload = (props: IPFSUploadType): JSX.Element => {
 	const classes = useStyles();
 	const V5Theme = useTheme();
 	const isSmallScreen = useMediaQuery(V5Theme.breakpoints.down("md"));
-	const [IPFSFiles, setIPFSFiles] = useState([] as File[]);
+	const [IPFSFiles, setIPFSFiles] = useState<Array<File>>([]);
 
 	/**
 	 * @description Handle Cancelling IPFS Upload Process
