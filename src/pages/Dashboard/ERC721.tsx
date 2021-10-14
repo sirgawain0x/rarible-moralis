@@ -1,26 +1,39 @@
 import React, { useState } from "react";
 import { useMoralisFile } from "react-moralis";
 import { Moralis } from "moralis";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
 import { useSnackbar } from "notistack";
 import { RouteComponentProps } from "@reach/router";
 import Box from "@material-ui/core/Box";
+import Divider from "@material-ui/core/Divider";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 import IPFSUpload from "../../components/IPFSUpload";
+
+const useStyles = makeStyles((theme: Theme) => ({
+	divider: {
+		marginBottom: theme.spacing(1),
+	},
+	buttonContainer: {
+		marginTop: theme.spacing(7),
+	},
+}));
 
 // eslint-disable-next-line
 const ERC721 = (_props: RouteComponentProps): JSX.Element => {
 	const { isUploading, saveFile } = useMoralisFile();
 	const { enqueueSnackbar } = useSnackbar();
+	const classes = useStyles();
 	const [openIPFSUpload, setOpenIPFSUpload] = useState(false);
-	const [IPFSFileHash, setIPFSFileHash] = useState("");
 	const [values, setValues] = useState({
 		name: "",
 		description: "",
-		attributes: [],
+		image: "",
+		attributes: "",
 	});
+	const [attributesArray] = useState([]);
 
 	const handleChange = (name: string, value: string) => {
 		setValues({ ...values, [name]: value });
@@ -37,72 +50,154 @@ const ERC721 = (_props: RouteComponentProps): JSX.Element => {
 		await saveFile(path, files[0], {
 			saveIPFS: true,
 			onSuccess: (result) => {
-				// @ts-ignore
-				setIPFSFileHash(result._ipfs ?? "");
-				enqueueSnackbar("Uploading to IPFS Successful.", {
-					variant: "success",
-				});
-				setOpenIPFSUpload(false);
+				if (result) {
+					// @ts-ignore
+					setValues({ ...values, image: result._ipfs ?? "" });
+					enqueueSnackbar("Uploading to IPFS Successful.", {
+						variant: "success",
+					});
+					setOpenIPFSUpload(false);
+				} else {
+					enqueueSnackbar("Failed to fetch result from IPFS.", {
+						variant: "error",
+					});
+				}
 			},
 			onError: () => {
 				enqueueSnackbar("Uploading to IPFS Failed.", { variant: "error" });
 			},
 		});
 	};
-	// Upload metadata object name & description image
-	const uploadMetaData = async (imageURL: any) => {
-		const { name } = values;
-		const { description } = values;
 
+	/**
+	 * @description Handle NFT Metadata Upload
+	 */
+	const onUploadMetaData = async () => {
 		const metadata = {
-			name,
-			description,
-			image: imageURL,
-			attributes: [],
+			...values,
+			attributes: attributesArray,
 		};
 
 		const file = new Moralis.File("file.json", {
 			base64: Buffer.from(`${metadata}`).toString("base64"),
 		});
-		await file.saveIPFS();
+
+		// @ts-ignore
+		await onUpload([file]);
 	};
 
 	return (
-		<Box component="form">
-			<div>
-				<TextField
-					id="metadataName"
-					label="Name"
-					variant="outlined"
-					name="name"
-					value={values.name}
-					onChange={handleChange}
-				/>
-				<TextField
-					id="metadataDescription"
-					label="Description"
-					multiline
-					name="description"
-					value={values.description}
-					onChange={handleChange}
-				/>
-				<TextField
-					id="metadataAttributes"
-					label="Attributes"
-					multiline
-					name="attributes"
-					value={values.description}
-					onChange={handleChange}
-				/>
-			</div>
-			<Button loading={isUploading} onClick={() => setOpenIPFSUpload(true)}>
-				Upload Image
-			</Button>
-			<Typography variant="h6">
-				<Link href={IPFSFileHash} target="_blank" rel="noopener">
-					{IPFSFileHash}
-				</Link>
-			</Typography>
+		<Box
+			component="form"
+			onSubmit={async (e) => {
+				e.preventDefault();
+				await onUploadMetaData();
+			}}
+		>
+			<Grid container spacing={2}>
+				<Grid item xs={12}>
+					<Typography variant="h4">Mint ERC721</Typography>
+				</Grid>
+				<Grid item xs={12}>
+					<Divider className={classes.divider} />
+				</Grid>
+				<Grid item xs={12} md={7}>
+					<TextField
+						id="metadataName"
+						label="Name"
+						variant="outlined"
+						required
+						name="name"
+						value={values.name}
+						onChange={handleChange}
+					/>
+				</Grid>
+				<Grid item xs={12} md={7}>
+					<TextField
+						id="metadataDescription"
+						label="Description"
+						multiline
+						required
+						minRows={5}
+						variant="outlined"
+						name="description"
+						value={values.description}
+						onChange={handleChange}
+					/>
+				</Grid>
+				<Grid item xs={12} md={7}>
+					{values.image !== "" ? (
+						<Grid container spacing={2}>
+							<Grid item xs={12} md={6}>
+								<Button
+									color="secondary"
+									variant="contained"
+									onClick={() => setValues({ ...values, image: "" })}
+								>
+									Delete
+								</Button>
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<Button
+									color="primary"
+									variant="contained"
+									onClick={() => window.open(values.image, "_blank")}
+								>
+									Preview
+								</Button>
+							</Grid>
+						</Grid>
+					) : (
+						<Button
+							loading={isUploading}
+							color="primary"
+							variant="contained"
+							onClick={() => setOpenIPFSUpload(true)}
+						>
+							Upload Image
+						</Button>
+					)}
+				</Grid>
+				<Grid item xs={12} md={7}>
+					<TextField
+						id="metadataAttributes"
+						label="Attributes"
+						name="attributes"
+						variant="outlined"
+						value={values.description}
+						onChange={handleChange}
+					/>
+				</Grid>
+				<Grid item xs={12}>
+					<Grid
+						container
+						justify="flex-end"
+						spacing={2}
+						className={classes.buttonContainer}
+					>
+						<Grid item xs={12} md={4}>
+							<Button
+								loading={isUploading}
+								color="secondary"
+								variant="contained"
+								onClick={() => setOpenIPFSUpload(true)}
+							>
+								Cancel
+							</Button>
+						</Grid>
+						<Grid item xs={12} md={4}>
+							<Button
+								loading={isUploading}
+								color="primary"
+								variant="contained"
+								onClick={() => setOpenIPFSUpload(true)}
+							>
+								Upload NFT Metadata
+							</Button>
+						</Grid>
+					</Grid>
+				</Grid>
+			</Grid>
 			<IPFSUpload
 				open={openIPFSUpload}
 				onCancel={() => setOpenIPFSUpload(false)}

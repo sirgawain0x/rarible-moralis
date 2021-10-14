@@ -14,6 +14,8 @@ interface TextFieldType {
 	autoFocus?: boolean;
 	disabled?: boolean;
 	multiline?: boolean;
+	minRows?: number;
+	maxRows?: number;
 	onChange: (name: string, value: string) => void;
 }
 

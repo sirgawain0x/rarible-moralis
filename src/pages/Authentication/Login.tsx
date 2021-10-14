@@ -12,6 +12,7 @@ import { useSnackbar } from "notistack";
 import { Web3Provider } from "react-moralis/lib/hooks/useMoralis/_useMoralisWeb3";
 import TextField from "../../components/TextField";
 import Button from "../../components/Button";
+import Logo from "../../assets/logo.png";
 
 interface LoginType {
 	username: string;
@@ -24,6 +25,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
+	},
+	logo: {
+		marginBottom: theme.spacing(2),
 	},
 	formContainer: {
 		marginTop: theme.spacing(1),
@@ -135,6 +139,7 @@ const Login = (_props: RouteComponentProps): JSX.Element => {
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<Box className={classes.mainContainer}>
+				<img src={Logo} alt="Logo" className={classes.logo} />
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
@@ -185,6 +190,7 @@ const Login = (_props: RouteComponentProps): JSX.Element => {
 						type="submit"
 						fullWidth
 						variant="contained"
+						color="primary"
 						disabled={loading}
 						loading={loadingButton.email}
 						className={classes.emailButton}

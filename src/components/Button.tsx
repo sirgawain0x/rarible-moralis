@@ -9,6 +9,7 @@ interface ButtonType {
 	type?: "button" | "submit" | "reset";
 	children: ReactNode | string;
 	variant?: "text" | "contained" | "outlined";
+	color?: "primary" | "secondary" | "default";
 	onClick?: () => void;
 	className?: string;
 }
