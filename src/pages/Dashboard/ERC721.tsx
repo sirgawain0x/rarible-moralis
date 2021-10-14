@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useMoralisFile } from "react-moralis";
-import { Moralis } from "moralis";
+import { useMoralis, useMoralisFile } from "react-moralis";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { useSnackbar } from "notistack";
 import { RouteComponentProps } from "@reach/router";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
+import Chip from "@material-ui/core/Chip";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "../../components/TextField";
 import Button from "../../components/Button";
@@ -19,10 +19,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 	buttonContainer: {
 		marginTop: theme.spacing(7),
 	},
+	chip: {
+		margin: theme.spacing(0.5),
+	},
 }));
 
 // eslint-disable-next-line
 const ERC721 = (_props: RouteComponentProps): JSX.Element => {
+	const { Moralis } = useMoralis();
 	const { isUploading, saveFile } = useMoralisFile();
 	const { enqueueSnackbar } = useSnackbar();
 	const classes = useStyles();
@@ -33,7 +37,7 @@ const ERC721 = (_props: RouteComponentProps): JSX.Element => {
 		image: "",
 		attributes: "",
 	});
-	const [attributesArray] = useState([]);
+	const [attributesArray, setAttributesArray] = useState<string[]>([]);
 
 	const handleChange = (name: string, value: string) => {
 		setValues({ ...values, [name]: value });
@@ -73,17 +77,54 @@ const ERC721 = (_props: RouteComponentProps): JSX.Element => {
 	 * @description Handle NFT Metadata Upload
 	 */
 	const onUploadMetaData = async () => {
-		const metadata = {
-			...values,
-			attributes: attributesArray,
-		};
+		try {
+			const metadata = {
+				...values,
+				attributes: attributesArray,
+			};
 
-		const file = new Moralis.File("file.json", {
-			base64: Buffer.from(`${metadata}`).toString("base64"),
-		});
+			const file = new Moralis.File("file.json", {
+				base64: btoa(JSON.stringify(metadata)),
+			});
 
-		// @ts-ignore
-		await onUpload([file]);
+			await file.saveIPFS();
+			enqueueSnackbar("Uploading Metadata to IPFS Successful.", {
+				variant: "success",
+			});
+		} catch (e) {
+			enqueueSnackbar("Uploading Metadata to IPFS Failed.", {
+				variant: "error",
+			});
+		}
+	};
+
+	/**
+	 * @description Handle adding attributes to the field
+	 */
+	const handleAddAttributes = () => {
+		if (values.attributes !== "") {
+			setAttributesArray([...attributesArray, values.attributes]);
+			// Empty the input
+			setValues({ ...values, attributes: "" });
+			enqueueSnackbar(`Add Attributes "${values.attributes}" successful.`, {
+				variant: "success",
+			});
+		} else {
+			enqueueSnackbar("Attributes field is empty.", {
+				variant: "warning",
+			});
+		}
+	};
+
+	/**
+	 * @description Handle deleting existing attributes
+	 *
+	 * @param attribute - the selected attributes that is going to be deleted
+	 */
+	const handleDeleteAttributes = (attribute: string) => {
+		setAttributesArray((attrArray) =>
+			attrArray.filter((attr) => attr !== attribute),
+		);
 	};
 
 	return (
@@ -159,19 +200,47 @@ const ERC721 = (_props: RouteComponentProps): JSX.Element => {
 					)}
 				</Grid>
 				<Grid item xs={12} md={7}>
-					<TextField
-						id="metadataAttributes"
-						label="Attributes"
-						name="attributes"
-						variant="outlined"
-						value={values.description}
-						onChange={handleChange}
-					/>
+					<Grid container spacing={2}>
+						<Grid item xs={9}>
+							<TextField
+								id="metadataAttributes"
+								label="Attributes"
+								name="attributes"
+								variant="outlined"
+								value={values.attributes}
+								onChange={handleChange}
+							/>
+						</Grid>
+						<Grid item xs={3}>
+							<Button
+								color="primary"
+								variant="contained"
+								onClick={handleAddAttributes}
+							>
+								Add
+							</Button>
+						</Grid>
+					</Grid>
+				</Grid>
+				<Grid item xs={12} md={7}>
+					<Grid container>
+						{attributesArray.map((attr) => {
+							return (
+								<Grid item key={attr}>
+									<Chip
+										label={attr}
+										onDelete={() => handleDeleteAttributes(attr)}
+										className={classes.chip}
+									/>
+								</Grid>
+							);
+						})}
+					</Grid>
 				</Grid>
 				<Grid item xs={12}>
 					<Grid
 						container
-						justify="flex-end"
+						justifyContent="flex-end"
 						spacing={2}
 						className={classes.buttonContainer}
 					>
@@ -188,9 +257,9 @@ const ERC721 = (_props: RouteComponentProps): JSX.Element => {
 						<Grid item xs={12} md={4}>
 							<Button
 								loading={isUploading}
+								type="submit"
 								color="primary"
 								variant="contained"
-								onClick={() => setOpenIPFSUpload(true)}
 							>
 								Upload NFT Metadata
 							</Button>

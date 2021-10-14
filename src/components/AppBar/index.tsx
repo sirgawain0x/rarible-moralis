@@ -75,7 +75,7 @@ const CustomAppBar = (props: AppBarIndexType): JSX.Element => {
 					>
 						{openAppBar ? <CloseIcon /> : <MenuIcon />}
 					</IconButton>
-					<Grid container justify="center" alignItems="center">
+					<Grid container justifyContent="center" alignItems="center">
 						<Grid item>
 							<img src={Logo} alt="Logo" className={classes.logo} />
 						</Grid>
