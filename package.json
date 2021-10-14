@@ -17,6 +17,7 @@
     "axios": "^0.23.0",
     "clsx": "^1.1.1",
     "dotenv": "^10.0.0",
+    "material-ui-chip-input": "^2.0.0-beta.2",
     "material-ui-dropzone": "^3.5.0",
     "moralis": "^0.0.88",
     "notistack": "^1.0.10",

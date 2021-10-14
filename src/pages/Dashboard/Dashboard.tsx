@@ -29,6 +29,12 @@ const Dashboard = (_props: RouteComponentProps): JSX.Element => {
 			enqueueSnackbar("Logout Failed.", { variant: "error" });
 		}
 	};
+	// fetch IPFS image
+	// async function fetchIPFSDoc(ipfsHash: any) {
+	// 	const url = `https://ipfs.moralis.io:2053/ipfs/${ipfsHash}`;
+	// 	const response = await fetch(url);
+	// 	return response.json();
+	// }
 
 	return (
 		<Grid container direction="column" spacing={3}>
