@@ -6,6 +6,7 @@ interface ButtonType {
 	loading?: boolean;
 	disabled?: boolean;
 	fullWidth?: boolean;
+	autoFocus?: boolean;
 	type?: "button" | "submit" | "reset";
 	children: ReactNode | string;
 	variant?: "text" | "contained" | "outlined";

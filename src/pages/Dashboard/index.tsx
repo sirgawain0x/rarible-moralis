@@ -54,7 +54,7 @@ const Index = (_props: RouteComponentProps): JSX.Element => {
 				<div className={classes.content}>
 					<Router>
 						<Dashboard path="dashboard" />
-						<ERC721 path="erc721" />
+						<ERC721 path="erc721/*" />
 						<ERC1155 path="erc1155" />
 					</Router>
 				</div>
