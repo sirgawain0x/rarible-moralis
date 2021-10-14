@@ -14,6 +14,12 @@ const DrawerMenu = [
 		title: "ERC 721",
 		icon: ImageIcon,
 	},
+	{
+		name: "erc1155",
+		link: "erc1155",
+		title: "ERC 1155",
+		icon: ImageIcon,
+	},
 ];
 
 export default DrawerMenu;
