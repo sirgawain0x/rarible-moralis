@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useMoralisFile } from "react-moralis";
+import { Moralis } from "moralis";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import { useSnackbar } from "notistack";
 import { RouteComponentProps } from "@reach/router";
+import Box from "@mui/material/Box";
+import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 import IPFSUpload from "../../components/IPFSUpload";
 
@@ -13,6 +16,25 @@ const IPFS = (_props: RouteComponentProps): JSX.Element => {
 	const { enqueueSnackbar } = useSnackbar();
 	const [openIPFSUpload, setOpenIPFSUpload] = useState(false);
 	const [IPFSFileHash, setIPFSFileHash] = useState("");
+	const [values, setValues] = useState({
+		name: "",
+		description: "",
+		attributes: [],
+	});
+
+	const handleChange = (
+		name: string,
+		description: string,
+		attributes: string,
+		value: string,
+	) => {
+		setValues({
+			...values,
+			[name]: value,
+			[description]: value,
+			[attributes]: value,
+		});
+	};
 
 	const onUpload = async (files: File[]) => {
 		// @ts-ignore
@@ -32,9 +54,57 @@ const IPFS = (_props: RouteComponentProps): JSX.Element => {
 			},
 		});
 	};
+	// Upload metadata object name & description image
+	const uploadMetaData = async (imageURL: any) => {
+		const { name } = values;
+		const { description } = values;
+
+		const metadata = {
+			name,
+			description,
+			image: imageURL,
+			attributes: [],
+		};
+
+		const file = new Moralis.File("file.json", {
+			base64: Buffer.from(`${metadata}`).toString("base64"),
+		});
+		await file.saveIPFS();
+	};
 
 	return (
-		<>
+		<Box
+			component="form"
+			sx={{
+				"& .MuiTextField-root": { m: 1, width: "25ch" },
+			}}
+			noValidate
+			autoComplete="off"
+		>
+			<div>
+				<TextField
+					id="metadataName"
+					label="Name"
+					variant="outlined"
+					name="name"
+					value={values.name}
+					onChange={handleChange}
+				/>
+				<TextField
+					id="metadataDescription"
+					label="Description"
+					multiline
+					value={values.description}
+					onChange={handleChange}
+				/>
+				<TextField
+					id="metadataAttributes"
+					label="Attributes"
+					multiline
+					value={values.description}
+					onChange={handleChange}
+				/>
+			</div>
 			<Button loading={isUploading} onClick={() => setOpenIPFSUpload(true)}>
 				Upload Image
 			</Button>
@@ -48,7 +118,7 @@ const IPFS = (_props: RouteComponentProps): JSX.Element => {
 				onCancel={() => setOpenIPFSUpload(false)}
 				onUpload={onUpload}
 			/>
-		</>
+		</Box>
 	);
 };
 

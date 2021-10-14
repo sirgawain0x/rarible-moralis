@@ -16,7 +16,7 @@ const MediaCard = (): JSX.Element => {
 					Alpha
 				</Typography>
 				<Typography variant="body2" color="text.secondary">
-					Special Power Rangers collection
+					Special Power Rangers NFT
 				</Typography>
 			</CardContent>
 			<CardActions>
