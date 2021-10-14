@@ -8,13 +8,18 @@ import Button from "../../components/Button";
 import IPFSUpload from "../../components/IPFSUpload";
 
 // eslint-disable-next-line
-const IPFS = (_props: RouteComponentProps): JSX.Element => {
+const ERC1155 = (_props: RouteComponentProps): JSX.Element => {
 	const { isUploading, saveFile } = useMoralisFile();
 	const { enqueueSnackbar } = useSnackbar();
 	const [openIPFSUpload, setOpenIPFSUpload] = useState(false);
 	const [IPFSFileHash, setIPFSFileHash] = useState("");
 
-	const onUpload = async (files: File[]) => {
+	/**
+	 * @description Handle IPFS Uploading
+	 *
+	 * @param files - File Array Object that is going to be uploaded to IPFS
+	 */
+	const onUpload = async (files: Array<File>) => {
 		// @ts-ignore
 		const { path } = files[0];
 		await saveFile(path, files[0], {
@@ -52,4 +57,4 @@ const IPFS = (_props: RouteComponentProps): JSX.Element => {
 	);
 };
 
-export default IPFS;
+export default ERC1155;

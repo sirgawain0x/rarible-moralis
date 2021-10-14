@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar,
 	},
+	content: {
+		flexGrow: 1,
+		padding: theme.spacing(3),
+	},
 }));
 
 // eslint-disable-next-line
@@ -47,11 +51,13 @@ const Index = (_props: RouteComponentProps): JSX.Element => {
 			<AppBar pathname={pathname} />
 			<Box component="main" flexGrow={1} className={classes.innerContainer}>
 				<div className={classes.toolbar} />
-				<Router>
-					<Dashboard path="dashboard" />
-					<ERC721 path="erc721" />
-					<ERC1155 path="erc1155" />
-				</Router>
+				<div className={classes.content}>
+					<Router>
+						<Dashboard path="dashboard" />
+						<ERC721 path="erc721" />
+						<ERC1155 path="erc1155" />
+					</Router>
+				</div>
 			</Box>
 		</Box>
 	);

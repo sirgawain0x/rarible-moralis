@@ -5,7 +5,16 @@ import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { SnackbarProvider } from "notistack";
 import App from "./App";
 
-const theme = createTheme();
+const theme = createTheme({
+	palette: {
+		primary: {
+			main: "#feda03",
+		},
+		secondary: {
+			main: "#000000",
+		},
+	},
+});
 
 ReactDOM.render(
 	<StrictMode>

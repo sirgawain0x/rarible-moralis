@@ -8,11 +8,14 @@ interface TextFieldType {
 	value?: string;
 	type?: string;
 	margin?: "none" | "dense" | "normal";
-	variant: "outlined";
+	variant?: "filled" | "outlined" | "standard";
 	required?: boolean;
 	fullWidth?: boolean;
 	autoFocus?: boolean;
 	disabled?: boolean;
+	multiline?: boolean;
+	minRows?: number;
+	maxRows?: number;
 	onChange: (name: string, value: string) => void;
 }
 
