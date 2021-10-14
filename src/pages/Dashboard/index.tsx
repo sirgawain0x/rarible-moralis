@@ -10,6 +10,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Dashboard from "./Dashboard";
 import ERC721 from "./ERC721";
+import ERC1155 from "./ERC1155";
 import AppBar from "../../components/AppBar";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -49,6 +50,7 @@ const Index = (_props: RouteComponentProps): JSX.Element => {
 				<Router>
 					<Dashboard path="dashboard" />
 					<ERC721 path="erc721" />
+					<ERC1155 path="erc1155" />
 				</Router>
 			</Box>
 		</Box>

@@ -5,6 +5,7 @@ import { navigate, RouteComponentProps } from "@reach/router";
 import { useSnackbar } from "notistack";
 import Typography from "@material-ui/core/Typography";
 import Button from "../../components/Button";
+import Card from "../../components/Card";
 
 // eslint-disable-next-line
 const Dashboard = (_props: RouteComponentProps): JSX.Element => {
@@ -44,6 +45,9 @@ const Dashboard = (_props: RouteComponentProps): JSX.Element => {
 				<Button variant="outlined" onClick={onLogout}>
 					Logout
 				</Button>
+			</Grid>
+			<Grid item xs={12}>
+				<Card />
 			</Grid>
 		</Grid>
 	);
