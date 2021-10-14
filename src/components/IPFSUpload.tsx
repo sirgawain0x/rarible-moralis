@@ -56,8 +56,8 @@ const Transition = forwardRef(function Transition(
 const IPFSUpload = (props: IPFSUploadType): JSX.Element => {
 	const { open, onCancel, onUpload } = props;
 	const classes = useStyles();
-	const V5Theme = useTheme();
-	const isSmallScreen = useMediaQuery(V5Theme.breakpoints.down("md"));
+	const mainTheme = useTheme();
+	const isSmallScreen = useMediaQuery(mainTheme.breakpoints.down("md"));
 	const [IPFSFiles, setIPFSFiles] = useState<Array<File>>([]);
 
 	/**

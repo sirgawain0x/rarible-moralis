@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import { useSnackbar } from "notistack";
 import { RouteComponentProps } from "@reach/router";
-import Box from "@mui/material/Box";
+import Box from "@material-ui/core/Box";
 import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 import IPFSUpload from "../../components/IPFSUpload";
@@ -22,18 +22,8 @@ const ERC721 = (_props: RouteComponentProps): JSX.Element => {
 		attributes: [],
 	});
 
-	const handleChange = (
-		name: string,
-		description: string,
-		attributes: string,
-		value: string,
-	) => {
-		setValues({
-			...values,
-			[name]: value,
-			[description]: value,
-			[attributes]: value,
-		});
+	const handleChange = (name: string, value: string) => {
+		setValues({ ...values, [name]: value });
 	};
 
 	/**
@@ -78,14 +68,7 @@ const ERC721 = (_props: RouteComponentProps): JSX.Element => {
 	};
 
 	return (
-		<Box
-			component="form"
-			sx={{
-				"& .MuiTextField-root": { m: 1, width: "25ch" },
-			}}
-			noValidate
-			autoComplete="off"
-		>
+		<Box component="form">
 			<div>
 				<TextField
 					id="metadataName"
@@ -99,6 +82,7 @@ const ERC721 = (_props: RouteComponentProps): JSX.Element => {
 					id="metadataDescription"
 					label="Description"
 					multiline
+					name="description"
 					value={values.description}
 					onChange={handleChange}
 				/>
@@ -106,6 +90,7 @@ const ERC721 = (_props: RouteComponentProps): JSX.Element => {
 					id="metadataAttributes"
 					label="Attributes"
 					multiline
+					name="attributes"
 					value={values.description}
 					onChange={handleChange}
 				/>
