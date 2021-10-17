@@ -7,7 +7,13 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import {
+	makeStyles,
+	Theme,
+	createStyles,
+	useTheme,
+} from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { navigate } from "@reach/router";
 import { useSnackbar } from "notistack";
 import { useMoralis } from "react-moralis";
@@ -45,6 +51,8 @@ const CustomAppBar = (props: AppBarIndexType): JSX.Element => {
 	const classes = useStyles();
 	const { enqueueSnackbar } = useSnackbar();
 	const { logout } = useMoralis();
+	const theme = useTheme();
+	const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 	const [openAppBar, setOpenAppBar] = useState(false);
 
 	/**
@@ -66,15 +74,17 @@ const CustomAppBar = (props: AppBarIndexType): JSX.Element => {
 		<>
 			<AppBar position="fixed" className={classes.appBar}>
 				<Toolbar>
-					<IconButton
-						color="inherit"
-						aria-label="open drawer"
-						onClick={() => setOpenAppBar(!openAppBar)}
-						edge="start"
-						className={classes.menuButton}
-					>
-						{openAppBar ? <CloseIcon /> : <MenuIcon />}
-					</IconButton>
+					{!isSmallScreen && (
+						<IconButton
+							color="inherit"
+							aria-label="open drawer"
+							onClick={() => setOpenAppBar(!openAppBar)}
+							edge="start"
+							className={classes.menuButton}
+						>
+							{openAppBar ? <CloseIcon /> : <MenuIcon />}
+						</IconButton>
+					)}
 					<Grid container justifyContent="center" alignItems="center">
 						<Grid item>
 							<img src={Logo} alt="Logo" className={classes.logo} />
@@ -90,7 +100,7 @@ const CustomAppBar = (props: AppBarIndexType): JSX.Element => {
 					</Button>
 				</Toolbar>
 			</AppBar>
-			<Drawer open={openAppBar} pathname={pathname} />
+			{!isSmallScreen && <Drawer open={openAppBar} pathname={pathname} />}
 		</>
 	);
 };

@@ -14,7 +14,11 @@ interface ERC721CardType {
 
 const useStyles = makeStyles((theme: Theme) => ({
 	cardContainer: {
-		maxWidth: "345px",
+		width: "100%",
+		borderRadius: theme.spacing(1),
+		[theme.breakpoints.up("md")]: {
+			maxWidth: "345px",
+		},
 	},
 	chip: {
 		margin: theme.spacing(0.5),
@@ -29,8 +33,8 @@ const ERC721Card = (props: ERC721CardType): JSX.Element => {
 	);
 
 	return (
-		<Card className={classes.cardContainer}>
-			<CardMedia component="img" height="140" image={data?.image} alt="alpha" />
+		<Card className={classes.cardContainer} raised>
+			<CardMedia component="img" height="250" image={data?.image} alt="alpha" />
 			<CardContent>
 				<Typography gutterBottom variant="h5" component="div">
 					{data?.name}

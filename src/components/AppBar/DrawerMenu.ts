@@ -1,23 +1,17 @@
-import DashboardIcon from "@material-ui/icons/Dashboard";
+import MarketplaceIcon from "@material-ui/icons/Storefront";
 import ImageIcon from "@material-ui/icons/Image";
 
 const DrawerMenu = [
 	{
-		name: "dashboard",
-		link: "dashboard",
-		title: "Dashboard",
-		icon: DashboardIcon,
+		name: "marketplace",
+		link: "marketplace",
+		title: "Marketplace",
+		icon: MarketplaceIcon,
 	},
 	{
 		name: "erc721",
 		link: "erc721",
 		title: "ERC 721",
-		icon: ImageIcon,
-	},
-	{
-		name: "erc1155",
-		link: "erc1155",
-		title: "ERC 1155",
 		icon: ImageIcon,
 	},
 ];
