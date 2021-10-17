@@ -97,7 +97,7 @@ const Login = (_props: RouteComponentProps): JSX.Element => {
 			...options(),
 			signingMessage: "Rarible Moralis Crypto Login",
 			onSuccess: () => {
-				navigate("/dashboard");
+				navigate("/marketplace");
 			},
 			onError: () => {
 				enqueueSnackbar("Crypto Login Failed.", { variant: "error" });
@@ -121,7 +121,7 @@ const Login = (_props: RouteComponentProps): JSX.Element => {
 		setLoadingButton({ ...loadingButton, email: true });
 		await login(username, password, {
 			onSuccess: () => {
-				navigate("/dashboard");
+				navigate("/marketplace");
 			},
 			onError: () => {
 				enqueueSnackbar("Email Login Failed.", { variant: "error" });

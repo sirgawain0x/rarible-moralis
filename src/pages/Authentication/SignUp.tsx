@@ -74,7 +74,7 @@ const SignUp = (_props: RouteComponentProps): JSX.Element => {
 			{
 				onSuccess: () => {
 					enqueueSnackbar("Sign Up Successful.", { variant: "success" });
-					navigate("/dashboard");
+					navigate("/marketplace");
 				},
 				onError: () => {
 					enqueueSnackbar("Sign Up Failed.", { variant: "error" });
