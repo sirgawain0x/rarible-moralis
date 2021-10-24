@@ -86,7 +86,7 @@ const Index = (_props: RouteComponentProps): JSX.Element => {
 						</Router>
 					</div>
 				</Box>
-				<BottomNavigationBar pathname={pathname} />
+				{isSmallScreen && <BottomNavigationBar pathname={pathname} />}
 			</Box>
 		</>
 	);

@@ -96,7 +96,21 @@ const CreateERC721 = (_props: RouteComponentProps): JSX.Element => {
 		try {
 			const metadata = {
 				...values,
-				attributes: attributesArray,
+				// For the purpose of OpenSea integration
+				attributes: [
+					{
+						trait_type: "Strength",
+						value: 73,
+					},
+					{
+						trait_type: "Intelligence",
+						value: 95,
+					},
+					{
+						trait_type: "Agility",
+						value: 67,
+					},
+				],
 			};
 
 			const file = new Moralis.File("file.json", {
@@ -112,7 +126,7 @@ const CreateERC721 = (_props: RouteComponentProps): JSX.Element => {
 						enqueueSnackbar("Uploading Metadata to IPFS Successful.", {
 							variant: "success",
 						});
-						navigate("/erc721");
+						navigate("/marketplace");
 					},
 					onError: () => {
 						enqueueSnackbar("Failed to save IPFS Metadata.", {
